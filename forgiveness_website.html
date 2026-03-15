@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I'm Sorry</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>emailjs.init('QtOyOs5mizCc4XVYa');</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #fdf6ee;
+    --blush: #f2c4b0;
+    --rose: #c9736a;
+    --deep: #3d2318;
+    --gold: #d4a96a;
+    --sage: #a8b89a;
+    --soft: #f8ede3;
+  }
+
+  html, body {
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--cream);
+    font-family: 'Quicksand', sans-serif;
+    color: var(--deep);
+    cursor: none;
+  }
+
+  .cursor {
+    width: 14px; height: 14px;
+    background: var(--rose);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, background 0.3s;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--rose);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.18s ease;
+    opacity: 0.5;
+  }
+
+  .petal {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    font-size: 22px;
+    animation: petalFall linear forwards;
+  }
+  @keyframes petalFall {
+    0%   { opacity: 0.9; transform: translateY(-30px) rotate(0deg); }
+    100% { opacity: 0;   transform: translateY(100vh) rotate(360deg); }
+  }
+
+  section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 60px 24px;
+    overflow: hidden;
+  }
+
+  #hero {
+    background: linear-gradient(160deg, #fdf6ee 60%, #f8e8da);
+    text-align: center;
+  }
+  .big-sorry {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(72px, 16vw, 180px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 0.9;
+    color: var(--rose);
+    letter-spacing: -2px;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeUp 1.2s ease 0.3s forwards;
+    position: relative;
+    z-index: 2;
+  }
+  .big-sorry::after {
+    content: '';
+    display: block;
+    width: 60px; height: 2px;
+    background: var(--gold);
+    margin: 20px auto 0;
+  }
+  .hero-sub {
+    font-size: clamp(14px, 2.5vw, 18px);
+    font-weight: 300;
+    color: var(--deep);
+    opacity: 0;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 28px;
+    animation: fadeUp 1.2s ease 0.7s forwards;
+    position: relative; z-index: 2;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeIn 1s ease 1.8s forwards;
+    color: var(--rose);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .scroll-hint .line {
+    width: 1px; height: 36px;
+    background: var(--rose);
+    animation: lineGrow 1.5s ease infinite;
+  }
+  @keyframes lineGrow {
+    0%, 100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.5); opacity: 0.4; }
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(50px);
+    opacity: 0.18;
+    pointer-events: none;
+  }
+  .blob1 { width: 420px; height: 420px; background: var(--blush); top: -100px; right: -100px; animation: drift 8s ease-in-out infinite; }
+  .blob2 { width: 300px; height: 300px; background: var(--sage); bottom: -80px; left: -80px; animation: drift 11s ease-in-out infinite reverse; }
+  @keyframes drift {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(20px, 20px) scale(1.08); }
+  }
+
+  #reasons { background: var(--soft); }
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(32px, 6vw, 62px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--deep);
+    text-align: center;
+    margin-bottom: 56px;
+    line-height: 1.1;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    max-width: 900px;
+    width: 100%;
+  }
+  .card {
+    background: white;
+    border-radius: 18px;
+    padding: 36px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    cursor: none;
+  }
+  .card:hover { transform: translateY(-8px); box-shadow: 0 24px 60px rgba(61,35,24,0.12); }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blush), var(--rose));
+  }
+  .card-emoji { font-size: 36px; margin-bottom: 14px; display: block; }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--deep);
+    margin-bottom: 10px;
+  }
+  .card-text { font-size: 13.5px; font-weight: 300; line-height: 1.7; color: #6b4e3d; }
+
+  #lilly {
+    background: linear-gradient(160deg, #3d2318 0%, #5c3526 100%);
+    color: var(--cream);
+    text-align: center;
+  }
+  #lilly .section-title { color: var(--cream); }
+  #lilly .section-label { color: var(--blush); }
+
+  .lilly-quote-wrap {
+    max-width: 680px;
+    width: 100%;
+    position: relative;
+    padding: 0 20px;
+  }
+  .lilly-big-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 120px;
+    color: var(--blush);
+    opacity: 0.15;
+    line-height: 0.6;
+    position: absolute;
+    top: -10px; left: 10px;
+    pointer-events: none;
+    user-select: none;
+  }
+  .lilly-quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4vw, 40px);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--cream);
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.02em;
+    animation: fadeUp 1.4s ease 0.4s both;
+  }
+  .lilly-divider {
+    width: 48px; height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 32px auto;
+  }
+  .lilly-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 7vw, 72px);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--blush);
+    letter-spacing: 0.08em;
+    animation: fadeUp 1.4s ease 0.8s both;
+    position: relative;
+  }
+  .lilly-name::after {
+    content: '';
+    display: block;
+    width: 40px; height: 1px;
+    background: var(--gold);
+    margin: 10px auto 0;
+    opacity: 0.6;
+  }
+  .lilly-role {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(242,196,176,0.55);
+    margin-top: 10px;
+    animation: fadeUp 1.4s ease 1s both;
+  }
+
+  #closer {
+    background: var(--cream);
+    text-align: center;
+  }
+  .closer-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 7vw, 80px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--deep);
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .closer-sub {
+    font-size: 14px;
+    font-weight: 300;
+    color: #7a5546;
+    letter-spacing: 0.08em;
+    max-width: 400px;
+    line-height: 1.8;
+    margin-bottom: 40px;
+  }
+  .heart-btn {
+    padding: 18px 52px;
+    background: var(--rose);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .heart-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .heart-btn:hover { transform: scale(1.06); box-shadow: 0 16px 50px rgba(201,115,106,0.45); }
+  .heart-btn:hover::before { opacity: 1; }
+  .btn-group {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .no-btn {
+    padding: 18px 52px;
+    background: transparent;
+    border: 1.5px solid #c9b0a8;
+    border-radius: 50px;
+    color: #a07060;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .no-btn:hover { border-color: var(--rose); color: var(--rose); transform: scale(1.03); }
+  .not-yet-msg {
+    margin-top: 28px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4vw, 40px);
+    font-style: italic;
+    color: #a07060;
+    display: none;
+    animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+  .forgiven-msg {
+    margin-top: 28px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-style: italic;
+    color: var(--rose);
+    display: none;
+    animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="big-sorry">I'm Sorry.</div>
+  <p class="hero-sub">A space to ask for forgiveness, from the heart</p>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="line"></div>
+  </div>
+</section>
+
+<!-- REASONS -->
+<section id="reasons">
+  <p class="section-label reveal">Why forgiveness matters</p>
+  <h2 class="section-title reveal">Mistakes make us human.<br>Apologies make us kind.</h2>
+  <div class="cards">
+    <div class="card reveal">
+      <span class="card-emoji">🌱</span>
+      <div class="card-title">It heals both sides</div>
+      <p class="card-text">Forgiveness isn't just a gift to the other person — it releases the weight you've been carrying too.</p>
+    </div>
+    <div class="card reveal">
+      <span class="card-emoji">🤝</span>
+      <div class="card-title">It rebuilds trust</div>
+      <p class="card-text">A sincere apology opens the door to reconnection. It says: "I see you, and I value what we have."</p>
+    </div>
+    <div class="card reveal">
+      <span class="card-emoji">💛</span>
+      <div class="card-title">Courage in vulnerability</div>
+      <p class="card-text">Saying sorry takes bravery. It means choosing the relationship over your pride — and that matters.</p>
+    </div>
+    <div class="card reveal">
+      <span class="card-emoji">🕊️</span>
+      <div class="card-title">Peace for everyone</div>
+      <p class="card-text">Unresolved conflict weighs on the heart. A real apology creates space for both of you to breathe again.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LILLY QUOTE -->
+<section id="lilly">
+  <div class="blob blob1" style="opacity:0.08;"></div>
+  <div class="blob blob2" style="opacity:0.06;"></div>
+  <div class="lilly-quote-wrap reveal">
+    <div class="lilly-big-quote">"</div>
+    <p class="lilly-quote-text">
+      In the beginning, there was no word for forgiveness —<br>
+      only the silence between two souls<br>
+      who had hurt each other,<br>
+      and still,<br>
+      <em>chose to stay.</em><br><br>
+      That silence was the first prayer.<br>
+      That choice — the first miracle.
+    </p>
+    <div class="lilly-divider"></div>
+    <div class="lilly-name">Lilly</div>
+    <div class="lilly-role">the first words on forgiveness</div>
+  </div>
+</section>
+
+<!-- CLOSER -->
+<section id="closer">
+  <div class="blob blob1" style="opacity:0.1;"></div>
+  <h2 class="closer-title reveal">You came here.<br>That already counts.</h2>
+  <p class="closer-sub reveal">The fact that you're trying — that you care enough to apologize — is where healing begins. Press below when you're ready.</p>
+  <div class="btn-group reveal">
+    <button class="heart-btn" onclick="forgiveMe()" id="forgivenBtn">I forgive you 💛</button>
+    <button class="no-btn" onclick="notYet()" id="noBtn">Not yet 🚪</button>
+  </div>
+  <div class="forgiven-msg" id="forgivenMsg">You are forgiven. ✨</div>
+  <div class="not-yet-msg" id="notYetMsg">That's okay. Take all the time you need. 🌿</div>
+</section>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx+'px'; cursor.style.top = my+'px'; });
+  function animRing() { rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15; ring.style.left = rx+'px'; ring.style.top = ry+'px'; requestAnimationFrame(animRing); }
+  animRing();
+
+  // Petals
+  const petalChars = ['🌸','🌹','🍃','🌷','✨','🌺'];
+  function spawnPetal() {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = petalChars[Math.floor(Math.random() * petalChars.length)];
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.top = '-40px';
+    p.style.fontSize = (16 + Math.random() * 18) + 'px';
+    const dur = 4 + Math.random() * 5;
+    p.style.animation = `petalFall ${dur}s linear forwards`;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), dur * 1000);
+  }
+  setInterval(spawnPetal, 800);
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(r => obs.observe(r));
+
+  async function notYet() {
+    const btn = document.getElementById('noBtn');
+    btn.innerHTML = '🚪 Sending...';
+    btn.disabled = true;
+
+    const now = new Date();
+    const timeStr = now.toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' });
+
+    try {
+      await emailjs.send('service_uewjxyi', 'template_8ye46tl', {
+        to_email: 'alpha12980aa@gmail.com',
+        time: timeStr,
+        message: `Someone clicked "Not yet" on your forgiveness website at ${timeStr}. 🚪 They are not ready to forgive yet — but they came. That already means something.`
+      });
+    } catch(e) {
+      console.error('EmailJS error:', e);
+    }
+
+    document.getElementById('forgivenBtn').style.display = 'none';
+    document.getElementById('noBtn').style.display = 'none';
+    document.getElementById('notYetMsg').style.display = 'block';
+  }
+  async function forgiveMe() {
+    const btn = document.getElementById('forgivenBtn');
+    btn.innerHTML = '💛 Sending...';
+    btn.disabled = true;
+
+    const now = new Date();
+    const timeStr = now.toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' });
+
+    try {
+      await emailjs.send('service_uewjxyi', 'template_8ye46tl', {
+        to_email: 'alpha12980aa@gmail.com',
+        time: timeStr,
+        message: `Someone clicked "I forgive you" on your forgiveness website at ${timeStr}. 🕊️ Someone out there has chosen grace over grudge — and they chose you.`
+      });
+    } catch(e) {
+      console.error('EmailJS error:', e);
+    }
+
+    btn.style.display = 'none';
+    document.getElementById('forgivenMsg').style.display = 'block';
+    for(let i = 0; i < 20; i++) setTimeout(spawnPetal, i * 80);
+  }
+</script>
+</body>
+</html>
