@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Finora - Personal Finance Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="nav glass">
+    <a href="#home" class="logo"><span class="logo-mark">F</span>Finora</a>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#how">How it works</a>
+    </nav>
+    <a href="#dashboard" class="btn-link">Open dashboard</a>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="home">
+    <div class="hero-text">
+      <h1>Know where every rupee goes.</h1>
+      <p>Finora helps you track spending, stay inside your monthly budget and save toward the things you actually want. Everything stays on your device.</p>
+      <div class="hero-buttons">
+        <a href="#dashboard" class="btn-link">Start tracking</a>
+        <a href="#features" class="btn-ghost">See features</a>
+      </div>
+    </div>
+
+    <div class="hero-card glass">
+      <h3>What you get</h3>
+      <ul class="tick-list">
+        <li>Income and expense tracking</li>
+        <li>Monthly budget with warnings</li>
+        <li>Savings goal progress</li>
+        <li>Spending by category</li>
+        <li>CSV export for Excel</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="section" id="features">
+    <h2 class="section-title">Everything you need to manage money</h2>
+    <div class="bento">
+      <div class="glass bf wide">
+        <div class="icon g2">🎯</div>
+        <h4>Budget alerts you can see</h4>
+        <p>Set one monthly limit. The bar changes colour as your spending grows, so you know before you overspend.</p>
+        <div class="chips">
+          <span class="chip ok">On track</span>
+          <span class="chip warn">Close to limit</span>
+          <span class="chip bad">Over budget</span>
+        </div>
+      </div>
+      <div class="glass bf">
+        <div class="icon g1">💸</div>
+        <h4>Track every transaction</h4>
+        <p>Add income and expenses with a category and date in seconds.</p>
+      </div>
+      <div class="glass bf">
+        <div class="icon g3">🏆</div>
+        <h4>Reach savings goals</h4>
+        <p>Name a goal and watch your savings fill the bar.</p>
+      </div>
+      <div class="glass bf">
+        <div class="icon g4">📊</div>
+        <h4>Spending insights</h4>
+        <p>A donut chart shows which categories take most of your money.</p>
+      </div>
+      <div class="glass bf">
+        <div class="icon g5">📁</div>
+        <h4>Export to Excel</h4>
+        <p>Download every transaction as a CSV file with one click.</p>
+      </div>
+      <div class="glass bf">
+        <div class="icon g6">❤️</div>
+        <h4>Financial health score</h4>
+        <p>One score out of 100 built from your savings, budget and goal.</p>
+      </div>
+      <div class="glass bf wide">
+        <div class="icon g7">🔮</div>
+        <h4>Month-end forecast and smart insights</h4>
+        <p>See your average daily spend, biggest expense, no-spend days and a prediction of where this month will end if you keep spending at the same pace.</p>
+      </div>
+      <div class="glass bf">
+        <div class="icon g8">📈</div>
+        <h4>6-month trend</h4>
+        <p>Compare income and expense month by month.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DASHBOARD (the working app) ===== -->
+  <section class="section" id="dashboard">
+    <div class="dash-head">
+      <div>
+        <h2 class="section-title">Your dashboard</h2>
+        <p class="sub">Your income, spending and savings in one place.</p>
+      </div>
+      <div class="glass topbar">
+        <label for="monthFilter">Month</label>
+        <input type="month" id="monthFilter">
+        <button id="allBtn" class="small">All time</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="glass stat main">
+        <div class="stat-top"><span class="stat-icon">💰</span>Total balance</div>
+        <h2 id="balance">₹0</h2>
+        <p class="stat-foot">Savings rate <b id="rate">0%</b></p>
+      </div>
+      <div class="glass stat">
+        <div class="stat-top"><span class="stat-icon in">⬇</span>Income</div>
+        <h2 id="income" class="green">₹0</h2>
+        <p class="stat-foot">Money received</p>
+      </div>
+      <div class="glass stat">
+        <div class="stat-top"><span class="stat-icon out">⬆</span>Expense</div>
+        <h2 id="expense" class="red">₹0</h2>
+        <p class="stat-foot">Money spent</p>
+      </div>
+      <div class="glass stat">
+        <div class="stat-top"><span class="stat-icon cnt">🧾</span>Transactions</div>
+        <h2 id="count">0</h2>
+        <p class="stat-foot">In this period</p>
+      </div>
+    </div>
+
+    <div class="extras">
+      <section class="glass panel">
+        <h3><span class="ph">❤️</span>Health score</h3>
+        <div class="ring" id="ring"><div class="ring-hole"><b id="score">0</b><span id="grade">-</span></div></div>
+        <p id="scoreTip" class="note center">Add transactions to see your score.</p>
+      </section>
+      <section class="glass panel">
+        <h3><span class="ph">💡</span>Smart insights</h3>
+        <ul id="insights" class="ins"></ul>
+      </section>
+      <section class="glass panel">
+        <h3><span class="ph">📈</span>Last 6 months</h3>
+        <div id="trend" class="trend"></div>
+        <p class="note center"><span class="dot in"></span> Income &nbsp; <span class="dot out"></span> Expense</p>
+      </section>
+    </div>
+
+    <div class="grid">
+      <div>
+        <section class="glass panel">
+          <h3><span class="ph">➕</span>Add transaction</h3>
+          <input type="text" id="title" placeholder="Title (e.g. Lunch)">
+          <div class="two">
+            <input type="number" id="amount" placeholder="Amount (₹)">
+            <select id="type">
+              <option value="income">Income</option>
+              <option value="expense" selected>Expense</option>
+            </select>
+          </div>
+          <div class="two">
+            <select id="category">
+              <option>Food</option><option>Travel</option><option>Shopping</option>
+              <option>Bills</option><option>Education</option><option>Salary</option>
+              <option>Other</option>
+            </select>
+            <input type="date" id="date">
+          </div>
+          <button id="addBtn">Add transaction</button>
+          <p id="error" class="error"></p>
+        </section>
+
+        <section class="glass panel">
+          <h3><span class="ph">🎯</span>Monthly budget</h3>
+          <div class="inline">
+            <input type="number" id="budgetInput" placeholder="Set budget (₹)">
+            <button id="budgetBtn" class="small">Save</button>
+          </div>
+          <div class="bar"><div id="budgetFill" class="fill"></div></div>
+          <p id="budgetText" class="note">No budget set.</p>
+        </section>
+
+        <section class="glass panel">
+          <h3><span class="ph">🏆</span>Savings goal</h3>
+          <input type="text" id="goalName" placeholder="Goal (e.g. New laptop)">
+          <div class="inline">
+            <input type="number" id="goalTarget" placeholder="Target (₹)">
+            <button id="goalBtn" class="small">Save</button>
+          </div>
+          <div class="bar"><div id="goalFill" class="fill blue"></div></div>
+          <p id="goalText" class="note">No goal set.</p>
+        </section>
+      </div>
+
+      <div>
+        <section class="glass panel">
+          <h3><span class="ph">📊</span>Spending by category</h3>
+          <div id="breakdown"></div>
+        </section>
+
+        <section class="glass panel">
+          <h3><span class="ph">🧾</span>History</h3>
+          <div class="filters">
+            <input type="text" id="search" placeholder="Search title">
+            <select id="catFilter">
+              <option value="">All categories</option>
+              <option>Food</option><option>Travel</option><option>Shopping</option>
+              <option>Bills</option><option>Education</option><option>Salary</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <ul id="list"></ul>
+          <div class="actions">
+            <button id="csvBtn" class="small">Download CSV</button>
+            <button id="clearBtn" class="small danger">Clear all</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section" id="how">
+    <h2 class="section-title">Three steps to a clear month</h2>
+    <div class="steps">
+      <div class="glass step"><span class="num">1</span><h4>Add your transactions</h4><p>Log money in and money out as it happens.</p></div>
+      <div class="glass step"><span class="num">2</span><h4>Set a budget and goal</h4><p>Decide how much to spend and what to save for.</p></div>
+      <div class="glass step"><span class="num">3</span><h4>Review the month</h4><p>Check the category bars and adjust next month.</p></div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <p>Finora · Mini project built with HTML, CSS and JavaScript. Data is saved only in your browser.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
